@@ -1,4 +1,4 @@
-CREATE TABLE DBO.amanDynamicPivot
+CREATE TABLE DBO.DynamicPivot
 (
 DynamicPivotID INT IDENTITY(1,1),
 SurveyName  VARCHAR(200),
@@ -9,16 +9,16 @@ ModifyDate  DATETIME
 )
 
 
-INSERT INTO DBO.amanDynamicPivot(SurveyName,ColumnName,Value,CreateDate,ModifyDate)
+INSERT INTO DBO.DynamicPivot(SurveyName,ColumnName,Value,CreateDate,ModifyDate)
 VALUES ('TEST 1', 'CustomerID','1548',GETDATE(),GETDATE())
 
 
-INSERT INTO DBO.amanDynamicPivot(SurveyName,ColumnName,Value,CreateDate,ModifyDate)
+INSERT INTO DBO.DynamicPivot(SurveyName,ColumnName,Value,CreateDate,ModifyDate)
 VALUES ('TEST 1', 'SurveyQuestion 1','How is it going today ?',GETDATE(),GETDATE())
 
 
 
-INSERT INTO DBO.amanDynamicPivot(SurveyName,ColumnName,Value,CreateDate,ModifyDate)
+INSERT INTO DBO.DynamicPivot(SurveyName,ColumnName,Value,CreateDate,ModifyDate)
 VALUES ('TEST 1', 'SurveyQuestion 2','How is the weather today ?',GETDATE(),GETDATE())
 
 
@@ -27,7 +27,7 @@ VALUES ('TEST 1', 'SurveyQuestion 2','How is the weather today ?',GETDATE(),GETD
 
  select * from (
  SELECT SurveyName, ColumnName,value
-    FROM dbo.amanDynamicPivot
+    FROM dbo.DynamicPivot
 )src
     PIVOT(
 	max(Value) 
@@ -54,7 +54,7 @@ SET @DynamicPivotQuery =
   N'SELECT SurveyName, ' + @ColumnName + '
     FROM
 	(SELECT surveyName, ColumnName,Value
-    FROM dbo.amanDynamicPivot) a
+    FROM dbo.DynamicPivot) a
     PIVOT(max(Value) 
           FOR ColumnName IN (' + @ColumnName + ')) AS PVTTable'
 --PRINT @DynamicPivotQuery
